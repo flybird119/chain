@@ -5,10 +5,18 @@ import (
 	"testing"
 
 	"chain/protocol/bc"
-	"chain/protocol/validation"
 	. "chain/protocol/vm"
 	"chain/testutil"
 )
+
+var emptyBlockVMContext = &Context{
+	VMVersion:            1,
+	Code:                 nil,
+	Arguments:            nil,
+	BlockHash:            &[]uint8{0xf0, 0x85, 0x4f, 0x88, 0xb4, 0x89, 0x0, 0x99, 0x2f, 0xec, 0x40, 0x43, 0xf9, 0x65, 0xfa, 0x2, 0x9d, 0xeb, 0x8a, 0xd6, 0x93, 0xcf, 0x37, 0x11, 0xfe, 0x83, 0x9, 0xb3, 0x90, 0x6a, 0x5a, 0x86},
+	BlockTimeMS:          new(uint64),
+	NextConsensusProgram: &[]uint8{},
+}
 
 func TestCheckSig(t *testing.T) {
 	cases := []struct {
@@ -377,11 +385,11 @@ func TestCryptoOps(t *testing.T) {
 		op: OP_TXSIGHASH,
 		startVM: &VirtualMachine{
 			RunLimit: 50000,
-			Context:  validation.NewTxVMContext(tx.TxEntries, tx.TxEntries.TxInputs[0], bc.Program{VMVersion: 1}, nil),
+			Context:  NewTxVMContext(tx.TxEntries, tx.TxEntries.TxInputs[0], bc.Program{VMVersion: 1}, nil),
 		},
 		wantVM: &VirtualMachine{
 			RunLimit: 49704,
-			Context:  validation.NewTxVMContext(tx.TxEntries, tx.TxEntries.TxInputs[0], bc.Program{VMVersion: 1}, nil),
+			Context:  NewTxVMContext(tx.TxEntries, tx.TxEntries.TxInputs[0], bc.Program{VMVersion: 1}, nil),
 			DataStack: [][]byte{{
 				47, 0, 60, 221, 100, 66, 123, 94,
 				237, 214, 204, 181, 133, 71, 2, 11,
@@ -393,14 +401,14 @@ func TestCryptoOps(t *testing.T) {
 		op: OP_TXSIGHASH,
 		startVM: &VirtualMachine{
 			RunLimit: 0,
-			Context:  validation.NewTxVMContext(tx.TxEntries, tx.TxEntries.TxInputs[0], bc.Program{VMVersion: 1}, nil),
+			Context:  NewTxVMContext(tx.TxEntries, tx.TxEntries.TxInputs[0], bc.Program{VMVersion: 1}, nil),
 		},
 		wantErr: ErrRunLimitExceeded,
 	}, {
 		op: OP_BLOCKHASH,
 		startVM: &VirtualMachine{
 			RunLimit: 50000,
-			Context:  validation.NewBlockVMContext(bc.MapBlock(&bc.Block{}), nil, nil),
+			Context:  emptyBlockVMContext,
 		},
 		wantVM: &VirtualMachine{
 			RunLimit: 49959,
@@ -410,13 +418,13 @@ func TestCryptoOps(t *testing.T) {
 				157, 235, 138, 214, 147, 207, 55, 17,
 				254, 131, 9, 179, 144, 106, 90, 134,
 			}},
-			Context: validation.NewBlockVMContext(bc.MapBlock(&bc.Block{}), nil, nil),
+			Context: emptyBlockVMContext,
 		},
 	}, {
 		op: OP_BLOCKHASH,
 		startVM: &VirtualMachine{
 			RunLimit: 0,
-			Context:  validation.NewBlockVMContext(bc.MapBlock(&bc.Block{}), nil, nil),
+			Context:  emptyBlockVMContext,
 		},
 		wantErr: ErrRunLimitExceeded,
 	}}
