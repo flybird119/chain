@@ -53,7 +53,7 @@ var (
 	// config vars
 	tlsCrt        = env.String("TLSCRT", "")
 	tlsKey        = env.String("TLSKEY", "")
-	rootCAs       = env.String("ROOT_CA_CERTS", "") // file path
+	rootCAs       = env.String("ROOT_CA_CERTS", "")
 	listenAddr    = env.String("LISTEN", ":1999")
 	dbURL         = env.String("DATABASE_URL", "postgres:///core?sslmode=disable")
 	splunkAddr    = os.Getenv("SPLUNKADDR")
@@ -132,6 +132,9 @@ func runServer() {
 	ctx := context.Background()
 	env.Parse()
 
+	// needs to happen after env.Parse()
+	config.TLS = *tlsCrt != "" && *tlsKey != "" && *rootCAs != ""
+
 	// We need to be able to add handlers to our serve mux in two phases.
 	// In the first phase, we will start
 	// listening on the raft routes (`/raft`). This allows us to do things like
@@ -166,14 +169,21 @@ func runServer() {
 	// it's blocking and we need to proceed to the rest of the core setup after
 	// we call it.
 	go func() {
-		if *tlsCrt != "" {
-			cert, err := tls.X509KeyPair([]byte(*tlsCrt), []byte(*tlsKey))
+		if config.TLS {
+			caPool := loadRootCAs(*rootCAs)
+			http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{
+				RootCAs: caPool,
+			}
+
+			cert, err := loadX509KeyPair(*tlsCrt, *tlsKey)
 			if err != nil {
 				chainlog.Fatalkv(ctx, chainlog.KeyError, errors.Wrap(err, "parsing tls X509 key pair"))
 			}
 
 			server.TLSConfig = &tls.Config{
 				Certificates: []tls.Certificate{cert},
+				ClientAuth:   tls.VerifyClientCertIfGiven,
+				ClientCAs:    caPool,
 			}
 			err = server.ListenAndServeTLS("", "") // uses TLS certs from above
 			if err != nil {
@@ -186,12 +196,6 @@ func runServer() {
 			}
 		}
 	}()
-
-	if *rootCAs != "" {
-		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{
-			RootCAs: loadRootCAs(*rootCAs),
-		}
-	}
 
 	sql.EnableQueryLogging(*logQueries)
 	db, err := sql.Open("hapg", *dbURL)
@@ -447,4 +451,19 @@ func loadRootCAs(name string) *x509.CertPool {
 		chainlog.Fatalkv(context.Background(), chainlog.KeyError, "no certs found in "+name)
 	}
 	return pool
+}
+
+// loadX509KeyPair reads a PEM-encoded X.509 certificate and
+// corresponding, RSA private key from provided file paths
+func loadX509KeyPair(cName, kName string) (tls.Certificate, error) {
+	cBytes, err := ioutil.ReadFile(cName)
+	if err != nil {
+		chainlog.Fatalkv(context.Background(), chainlog.KeyError, err)
+	}
+
+	kBytes, err := ioutil.ReadFile(kName)
+	if err != nil {
+		chainlog.Fatalkv(context.Background(), chainlog.KeyError, err)
+	}
+	return tls.X509KeyPair(cBytes, kBytes)
 }
