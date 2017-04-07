@@ -5,7 +5,7 @@ const type = 'accessControl'
 const idFunc = (item, index) => index
 
 const itemsReducer = (state = {}, action) => {
-  if (action.type == 'APPEND_ACCESS_CONTROL_PAGE') {
+  if (action.type == 'APPEND_ACCESSCONTROL_PAGE') {
     const newState = {}
     action.param.items.forEach((item, index) => {
       item.id = `acl-${index}`
@@ -23,7 +23,7 @@ const listViewReducer = combineReducers({
 })
 
 const queriesReducer = (state = {}, action) => {
-  if (action.type == 'APPEND_ACCESS_CONTROL_PAGE') {
+  if (action.type == 'APPEND_ACCESSCONTROL_PAGE') {
     const query = action.param.next.filter || ''
     const list = state[query] || {}
 
