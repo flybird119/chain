@@ -132,6 +132,15 @@ func runServer() {
 	ctx := context.Background()
 	env.Parse()
 
+	if *tlsCrt == "" && *tlsKey == "" && *rootCAs == "" {
+		if httpsRedirect {
+			err := generatePKIX(ctx, tlsCrt, tlsKey, rootCAs)
+			if err != nil {
+				chainlog.Fatalkv(ctx, chainlog.KeyError, err)
+			}
+		}
+	}
+
 	// We need to be able to add handlers to our serve mux in two phases.
 	// In the first phase, we will start
 	// listening on the raft routes (`/raft`). This allows us to do things like
