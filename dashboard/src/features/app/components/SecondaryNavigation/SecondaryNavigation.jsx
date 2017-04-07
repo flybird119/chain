@@ -30,6 +30,12 @@ class SecondaryNavigation extends React.Component {
             </Link>
           </li>
           <li>
+            <Link to='/access_control' activeClassName={styles.active}>
+              {navIcon('feed', styles)}
+              Access Control
+            </Link>
+          </li>
+          <li>
             <Link to='/access_tokens/client' activeClassName={styles.active}>
               {navIcon('client', styles)}
               Client tokens
