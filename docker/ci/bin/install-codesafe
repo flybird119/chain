@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -eo pipefail
+
+sha256sum -c - <<EOF
+7c77b2c07749b19b3cc11f213f31753d1ec88c69ceb5a33c995152bf0b19b7df  /tmp/CodeSafe-linux64-dev-12.10.01.tar
+EOF
+
+tar x -C /tmp -f /tmp/CodeSafe-linux64-dev-12.10.01.tar
+rm -f /tmp/CodeSafe-linux64-dev-12.10.01.tar
+
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/csd/agg.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/csdref/agg.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/ctls/agg.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/devref/agg.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/dsserv/user.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/gccsrc/ppcdev.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/hwcrhk/user.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/hwsp/agg.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/javasp/agg.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/jcecsp/user.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/jd/agg.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/ncsnmp/user.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/nhfw/agg.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/pkcs11/user.tar
+tar x -C / -f /tmp/CodeSafe-linux64/linux/libc6_11/amd64/nfast/ratls/agg.tar
+
+rm -rf /tmp/CodeSafe-linux64
+
+echo <<EOF >$HOME/.bash_profile
+PATH=$PATH:/opt/nfast/bin
+EOF

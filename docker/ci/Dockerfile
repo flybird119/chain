@@ -12,6 +12,10 @@ ENV CHAIN="/go/src/chain" \
 
 ADD bin /usr/bin
 
+
+COPY CodeSafe-linux64-dev-12.10.01.tar /tmp
+RUN install-codesafe && rm -f /usr/bin/install-codesafe
+
 RUN yum -y update \
     && yum install -y autoconf automake bash curl gcc gcc-c++ git libtool make openssl-devel ruby wget unzip \
     && install-go && rm -f /usr/bin/install-go \
@@ -24,4 +28,3 @@ RUN yum -y update \
     && go get -u google.golang.org/grpc \
     && yum remove -y autoconf automake libtool gcc-c++ unzip \
     && yum clean all
-
