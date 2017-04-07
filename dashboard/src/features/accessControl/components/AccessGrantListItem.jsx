@@ -2,9 +2,12 @@ import React from 'react'
 
 class ListItem extends React.Component {
   render() {
+    const item = this.props.item
     return(
       <tr>
-        <td>Hello</td>
+        <td>{item.id}</td>
+        <td>{item.policy}</td>
+        <td>Revoke</td>
       </tr>
     )
   }
