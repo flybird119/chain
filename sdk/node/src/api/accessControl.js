@@ -9,7 +9,7 @@ const accessControl = (client) => ({
     cb
   ),
 
-  list: (params, cb) =>
+  query: (params, cb) =>
     shared.query(client, 'accessTokens', '/list-acl-grants', params, {cb}),
 })
 

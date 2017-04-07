@@ -1,10 +1,6 @@
 import AccessControlList from './components/AccessControlList'
 import { makeRoutes } from 'features/shared'
 
-export default (store) => ({
-  path: 'access_control',
-  indexRoute: {
-    component: AccessControlList
-  }
+export default (store) => makeRoutes(store, 'accessControl', AccessControlList, null, null, {
+  path: 'access_control'
 })
-// makeRoutes(store, 'access_control', AccessControlList, null, null)
