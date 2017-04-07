@@ -132,6 +132,9 @@ func runServer() {
 	ctx := context.Background()
 	env.Parse()
 
+	// needs to happen after env.Parse()
+	config.TLS = *tlsCrt != "" && *tlsKey != "" && *rootCAs != ""
+
 	// We need to be able to add handlers to our serve mux in two phases.
 	// In the first phase, we will start
 	// listening on the raft routes (`/raft`). This allows us to do things like
@@ -166,7 +169,7 @@ func runServer() {
 	// it's blocking and we need to proceed to the rest of the core setup after
 	// we call it.
 	go func() {
-		if *tlsCrt != "" {
+		if config.TLS {
 			cert, err := tls.X509KeyPair([]byte(*tlsCrt), []byte(*tlsKey))
 			if err != nil {
 				chainlog.Fatalkv(ctx, chainlog.KeyError, errors.Wrap(err, "parsing tls X509 key pair"))
