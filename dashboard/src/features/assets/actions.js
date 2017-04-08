@@ -1,4 +1,4 @@
-import { baseCreateActions, baseListActions } from 'features/shared/actions'
+import { baseCreateActions, baseUpdateActions, baseListActions } from 'features/shared/actions'
 
 const type = 'asset'
 
@@ -8,9 +8,14 @@ const form = baseCreateActions(type, {
   intFields: ['quorum'],
   redirectToShow: true,
 })
+const update = baseUpdateActions(type, {
+  jsonFields: ['tags'],
+  redirectToShow: true,
+})
 
 const actions = {
   ...list,
   ...form,
+  ...update,
 }
 export default actions

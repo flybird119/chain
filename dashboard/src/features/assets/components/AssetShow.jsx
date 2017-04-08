@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 import {
   BaseShow,
   PageContent,
@@ -29,7 +30,10 @@ class AssetShow extends BaseShow {
               <button key='show-circulation' className='btn btn-link' onClick={this.props.showCirculation.bind(this, item)}>
                 Circulation
               </button>,
-              <RawJsonButton key='raw-json' item={item} />
+              <RawJsonButton key='raw-json' item={item} />,
+              <Link to={`/assets/${item.id}/edit`} key='edit-asset' className='btn btn-link'>
+                Edit
+              </Link>
             ]}
             items={[
               {label: 'ID', value: item.id},

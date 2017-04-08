@@ -76,6 +76,18 @@ export const flashMessages = (state = {}, action) => {
       return state
     }
 
+    case 'UPDATED_ACCOUNT': {
+      return newSuccess(state, <p>
+          Updated account.
+        </p>)
+    }
+
+    case 'UPDATED_ASSET': {
+      return newSuccess(state, <p>
+          Updated account.
+        </p>)
+    }
+
     case 'ERROR': {
       return newError(state, action.payload.message)
     }

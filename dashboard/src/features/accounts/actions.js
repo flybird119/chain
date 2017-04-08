@@ -1,5 +1,5 @@
 import { chainClient } from 'utility/environment'
-import { baseCreateActions, baseListActions } from 'features/shared/actions'
+import { baseCreateActions, baseUpdateActions, baseListActions } from 'features/shared/actions'
 
 const type = 'account'
 
@@ -9,10 +9,15 @@ const form = baseCreateActions(type, {
   intFields: ['quorum'],
   redirectToShow: true,
 })
+const update = baseUpdateActions(type, {
+  jsonFields: ['tags'],
+  redirectToShow: true,
+})
 
 let actions = {
   ...list,
   ...form,
+  ...update,
   createReceiver: (data) => () => {
     return chainClient().accounts.createReceiver(data)
   }
