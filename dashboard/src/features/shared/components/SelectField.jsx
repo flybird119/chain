@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactMarkdown from 'react-markdown'
 import FieldLabel from './FieldLabel/FieldLabel'
 import pick from 'lodash/pick'
 
@@ -32,7 +33,9 @@ class SelectField extends React.Component {
             </option>)}
         </select>
 
-        {this.props.hint && <span className='help-block'>{this.props.hint}</span>}
+        {this.props.hint && <span className='help-block'>
+          <ReactMarkdown source={this.props.hint} />
+        </span>}
       </div>
     )
   }
