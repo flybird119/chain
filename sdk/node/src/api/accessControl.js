@@ -15,13 +15,20 @@ const accessControl = (/* client */) => ({
     Promise.resolve({
       items: [
         {
-          id: 'domtoken',
-          type: 'access_token',
+          guard_data: {
+            id: 'alicetoken'
+          },
+          guard_type: 'access_token',
           policy: 'client-readwrite',
         },
         {
-          id: 'SN: foobar.com',
-          type: 'x509',
+          guard_data: {
+            subject: {
+              cn: 'bob',
+              ou: 'engineering',
+            }
+          },
+          guard_type: 'x509',
           policy: 'network',
         },
       ],
