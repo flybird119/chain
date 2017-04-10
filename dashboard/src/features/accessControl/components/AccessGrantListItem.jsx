@@ -1,6 +1,6 @@
 import React from 'react'
 
-class ListItem extends React.Component {
+class AccessGrantListItem extends React.Component {
   render() {
     const item = this.props.item
     return(
@@ -13,4 +13,4 @@ class ListItem extends React.Component {
   }
 }
 
-export default ListItem
+export default AccessGrantListItem
