@@ -20,7 +20,7 @@ const accessControl = (/* client */) => ({
           policy: 'client-readwrite',
         },
         {
-          id: 'SN: visa.com',
+          id: 'SN: foobar.com',
           type: 'x509',
           policy: 'network',
         },
