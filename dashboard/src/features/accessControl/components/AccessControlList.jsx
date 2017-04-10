@@ -2,20 +2,16 @@ import React from 'react'
 import AccessGrantListItem from './AccessGrantListItem'
 import { connect } from 'react-redux'
 import { TableList, PageTitle, PageContent } from 'features/shared/components'
-
-// export default BaseList.connect(
-//   BaseList.mapStateToProps(type, AccessGrantListItem, {
-//     skipQuery: true,
-//     label: 'Access control',
-//     wrapperComponent: TableList,
-//     wrapperProps: {
-//       titles: ['ID', 'Grant']
-//     }
-//   }),
-//   BaseList.mapDispatchToProps(type)
-// )
+import styles from './AccessControlList.scss'
 
 class AccessControlList extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      selected: 'tokens'
+    }
+  }
+
   render() {
     const tableListProps = {
       titles: ['ID', 'Policy']
@@ -33,6 +29,11 @@ class AccessControlList extends React.Component {
       <PageTitle title='Access Control' />
 
       <PageContent>
+        <div className={`btn-group ${styles.btnGroup}`} role='group'>
+          <button className={`btn btn-default ${'x'}`}>Tokens</button>
+          <button className={`btn btn-default ${'x'}`}>Certificates</button>
+        </div>
+
         {tokenList}
         {certList}
       </PageContent>
@@ -40,11 +41,12 @@ class AccessControlList extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const items = Object.values(state.accessControl.items)
   return {
     tokens: items.filter(item => item.type == 'access_token'),
     certs: items.filter(item => item.type == 'x509'),
+    selectedTab: ownProps.params.type,
   }
 }
 
