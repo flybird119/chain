@@ -16,7 +16,7 @@ export default function(type, options = {}) {
       return function(dispatch) {
         return promise.then(() => clientApi.update({
           id: id,
-          new_alias: data.alias,
+          newAlias: data.alias,
           tags: JSON.parse(data.tags),
         }).then((resp) => {
           dispatch(updated(resp))
