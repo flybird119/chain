@@ -18,7 +18,7 @@ class AccessControlList extends React.Component {
     </TableList>
 
     return (<div>
-      <PageTitle title='Access Control' />
+      <PageTitle title='Access control' />
 
       <PageContent>
         <div className={`btn-group ${styles.btnGroup}`} role='group'>
@@ -37,16 +37,23 @@ class AccessControlList extends React.Component {
 
         {this.props.tokensSelected && <div>
           <button
-            key='showCreate'
             className={`btn btn-primary ${styles.newBtn}`}
             onClick={this.props.showTokenCreate}>
-              + New access grant
+              + New token
           </button>
 
           {tokenList}
         </div>}
 
-        {this.props.certificatesSelected && certList}
+        {this.props.certificatesSelected && <div>
+          <button
+            className={`btn btn-primary ${styles.newBtn}`}
+            onClick={this.props.showAddCertificate}>
+              + Add certificate
+          </button>
+
+          {certList}
+        </div>}
       </PageContent>
     </div>)
   }
@@ -71,6 +78,7 @@ const mapDispatchToProps = (dispatch) => ({
   showTokens: () => dispatch(replace('/access_control?type=token')),
   showCertificates: () => dispatch(replace('/access_control?type=certificate')),
   showTokenCreate: () => dispatch(actions.showTokenCreate),
+  showAddCertificate: () => dispatch(actions.showAddCertificate),
 })
 
 export default connect(

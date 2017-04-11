@@ -6,7 +6,7 @@ export default {
   ...baseListActions('accessControl', {
     clientApi: () => chainClient().accessControl
   }),
-  showTokenCreate: push('access_control/create/token'),
+  showTokenCreate: push('access_control/create-token'),
   submitTokenForm: data => {
     const body = {...data}
 
@@ -19,7 +19,7 @@ export default {
       }, err => Promise.reject(err))
     }
   },
-  showCertificateCreate: push('access_control/create/token'),
+  showAddCertificate: push('access_control/add-certificate'),
   submitCertificateForm: data => {
     const body = {...data}
 

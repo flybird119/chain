@@ -1,5 +1,6 @@
 import AccessControlList from './components/AccessControlList'
 import NewToken from './components/NewToken'
+import NewCertificate from './components/NewCertificate'
 import { makeRoutes } from 'features/shared'
 
 const checkParams = (nextState, replace) => {
@@ -10,7 +11,8 @@ const checkParams = (nextState, replace) => {
 
 export default (store) => {
   const routes = makeRoutes(store, 'accessControl', AccessControlList, null, null, {
-    path: 'access_control'
+    path: 'access_control',
+    name: 'Access control'
   })
 
   const existingOnEnter = routes.indexRoute.onEnter
@@ -27,8 +29,13 @@ export default (store) => {
   }
 
   routes.childRoutes.push({
-    path: 'create/token',
+    path: 'create-token',
     component: NewToken
+  })
+
+  routes.childRoutes.push({
+    path: 'add-certificate',
+    component: NewCertificate
   })
 
   return routes
