@@ -22,7 +22,9 @@ class AccessGrantListItem extends React.Component {
       <tr>
         <td>{desc}</td>
         <td>{item.policy}</td>
-        <td>Revoke</td>
+        <td>
+          <button className='btn btn-danger btn-xs' disabled>Revoke</button>
+        </td>
       </tr>
     )
   }
