@@ -18,11 +18,9 @@ class SelectField extends React.Component {
 
     const fieldProps = pick(this.props.fieldProps, SELECT_FIELD_PROPS)
     const {touched, error} = this.props.fieldProps
-    console.log(touched);
-    console.log(error);
 
     return(
-      <div className='form-group'>
+      <div className={`form-group ${touched && error && 'has-error'}`}>
         {this.props.title && <FieldLabel>{this.props.title}</FieldLabel>}
         <select
           className='form-control' {...fieldProps}
@@ -35,8 +33,8 @@ class SelectField extends React.Component {
             </option>)}
         </select>
 
+        {touched && error && <span className='text-danger'><strong>{error}</strong></span>}
         {this.props.hint && <span className='help-block'>{this.props.hint}</span>}
-        {touched && error && <span className='text-danger'>{error}</span>}
       </div>
     )
   }

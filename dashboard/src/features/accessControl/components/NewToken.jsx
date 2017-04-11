@@ -46,16 +46,12 @@ const fields = [
 const validate = values => {
   const errors = {}
 
-  console.log(values);
-
   if (!values.policy) {
     errors.policy = 'Policy is required'
   }
   if (!values.guard_data.id) {
     errors.guard_data = {id: 'Token name is required'}
   }
-
-  console.log(errors);
 
   return errors
 }
