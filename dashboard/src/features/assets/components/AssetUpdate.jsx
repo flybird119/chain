@@ -1,5 +1,5 @@
 import React from 'react'
-import { BaseUpdate, FormContainer, FormSection, JsonField, TextField } from 'features/shared/components'
+import { BaseUpdate, FormContainer, FormSection, JsonField } from 'features/shared/components'
 import { reduxForm } from 'redux-form'
 
 class Form extends React.Component {
@@ -25,7 +25,7 @@ class Form extends React.Component {
 
   render() {
     const {
-      fields: { alias, tags },
+      fields: { tags },
       error,
       handleSubmit,
       submitting
@@ -34,13 +34,12 @@ class Form extends React.Component {
     return(
       <FormContainer
         error={error}
-        label='Edit asset'
+        label='Edit asset tags'
         onSubmit={handleSubmit(this.submitWithErrors)}
         submitting={submitting} >
 
-        <FormSection title='Asset Information'>
-          <TextField title='Alias' placeholder='Alias' fieldProps={alias} autoFocus={true} />
-          <JsonField title='Tags' fieldProps={tags} />
+        <FormSection title='Asset Tags'>
+          <JsonField fieldProps={tags} />
         </FormSection>
       </FormContainer>
     )
@@ -60,7 +59,6 @@ const validate = values => {
 }
 
 const fields = [
-  'alias',
   'tags'
 ]
 
@@ -74,7 +72,6 @@ const initialValues = (state, ownProps) => {
     const tags = Object.keys(item.tags).length === 0 ? '{\n\t\n}' : JSON.stringify(item.tags, null, 1)
     return {
       initialValues: {
-        alias: item.alias,
         tags: tags
       }
     }

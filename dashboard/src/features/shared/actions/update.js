@@ -11,12 +11,9 @@ export default function(type, options = {}) {
       const clientApi = options.clientApi ? options.clientApi() : chainClient()[`${type}s`]
       let promise = Promise.resolve()
 
-      if (typeof data.alias == 'string')  data.alias = data.alias.trim()
-
       return function(dispatch) {
         return promise.then(() => clientApi.update({
           id: id,
-          newAlias: data.alias,
           tags: JSON.parse(data.tags),
         }).then((resp) => {
           dispatch(updated(resp))

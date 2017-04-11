@@ -31,7 +31,7 @@ class AssetShow extends BaseShow {
                 Circulation
               </button>,
               <RawJsonButton key='raw-json' item={item} />,
-              <Link to={`/assets/${item.id}/edit`} key='edit-asset' className='btn btn-link'>
+              <Link to={`/assets/${item.id}/tags`} key='edit-asset-tags' className='btn btn-link'>
                 Edit
               </Link>
             ]}

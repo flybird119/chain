@@ -43,7 +43,7 @@ const makeRoutes = (store, type, List, New, Show, Update, options = {}) => {
 
   if (Update) {
     childRoutes.push({
-      path: ':id/edit',
+      path: ':id/tags',
       component: Update
     })
   }
