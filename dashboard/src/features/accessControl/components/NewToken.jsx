@@ -2,6 +2,7 @@ import React from 'react'
 import { BaseNew, FormContainer, FormSection, TextField, SelectField } from 'features/shared/components'
 import { policyOptions } from 'features/accessControl/constants'
 import { reduxForm } from 'redux-form'
+import { actions } from 'features/accessControl'
 
 class NewToken extends React.Component {
   render() {
@@ -20,7 +21,7 @@ class NewToken extends React.Component {
         submitting={submitting} >
 
         <FormSection title='Token information'>
-          <TextField title='Token Name' fieldProps={guard_data.id} />
+          <TextField title='Token Name' fieldProps={guard_data.id} autoFocus={true} />
           <SelectField options={policyOptions}
             title='Policy'
             hint='Available policies are:
@@ -42,11 +43,33 @@ const fields = [
   'policy',
 ]
 
+const validate = values => {
+  const errors = {}
+
+  console.log(values);
+
+  if (!values.policy) {
+    errors.policy = 'Policy is required'
+  }
+  if (!values.guard_data.id) {
+    errors.guard_data = {id: 'Token name is required'}
+  }
+
+  console.log(errors);
+
+  return errors
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  submitForm: (data) => dispatch(actions.submitTokenForm(data))
+})
+
 export default BaseNew.connect(
   BaseNew.mapStateToProps('accessControl'),
-  BaseNew.mapDispatchToProps('accessControl'),
+  mapDispatchToProps,
   reduxForm({
     form: 'newAccessGrantForm',
     fields,
+    validate
   })(NewToken)
 )

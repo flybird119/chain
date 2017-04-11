@@ -6,7 +6,33 @@ export default {
   ...baseListActions('accessControl', {
     clientApi: () => chainClient().accessControl
   }),
-  showTokenCreate: push('access_control/create/token')
+  showTokenCreate: push('access_control/create/token'),
+  submitTokenForm: data => {
+    const body = {...data}
+
+    body.guard_type = 'access_token'
+
+    return function(dispatch) {
+      return chainClient().accessControl.create(body).then(resp => {
+        dispatch({ type: 'CREATED_ACCESSTOKEN', resp })
+        dispatch(push({pathname: 'access_control', state: {preserveFlash: true}}))
+      }, err => Promise.reject(err))
+    }
+  },
+  showCertificateCreate: push('access_control/create/token'),
+  submitCertificateForm: data => {
+    const body = {...data}
+
+    body.guard_type = 'x509'
+
+    return function(dispatch) {
+      return chainClient().accessControl.create(body).then(resp => {
+        dispatch({ type: 'CREATED_ACCESSX509', resp })
+        dispatch(push({pathname: 'access_control?type=certificate', state: {preserveFlash: true}}))
+      }, err => Promise.reject(err))
+    }
+
+  },
 }
 
 // fetchItems,
@@ -14,7 +40,7 @@ export default {
 // fetchAll,
 // deleteItem,
 // pushList,
-// didLoadAutocomplete,
-// showcreate,
+// x didLoadAutocomplete,
+// √ showcreate,
 // created,
-// submitForm
+// √ submitForm

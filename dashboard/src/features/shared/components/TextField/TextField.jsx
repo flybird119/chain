@@ -22,8 +22,8 @@ class TextField extends React.Component {
     const fieldProps = pick(this.props.fieldProps, TEXT_FIELD_PROPS)
 
     const inputClasses = ['form-control']
-    const error = this.props.fieldProps.error
-    if (error) {
+    const {touched, error } = this.props.fieldProps
+    if (touched && error) {
       inputClasses.push(styles.errorInput)
     }
 
@@ -38,7 +38,7 @@ class TextField extends React.Component {
           {...fieldProps} />
 
         {this.props.hint && <span className='help-block'>{this.props.hint}</span>}
-        {error && <span className={styles.errorText}>{error}</span>}
+        {touched && error && <span className={styles.errorText}>{error}</span>}
       </div>
     )
   }

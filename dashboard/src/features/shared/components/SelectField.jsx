@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactMarkdown from 'react-markdown'
 import FieldLabel from './FieldLabel/FieldLabel'
 import pick from 'lodash/pick'
 
@@ -18,6 +17,9 @@ class SelectField extends React.Component {
     const labelKey = this.props.labelKey || 'label'
 
     const fieldProps = pick(this.props.fieldProps, SELECT_FIELD_PROPS)
+    const {touched, error} = this.props.fieldProps
+    console.log(touched);
+    console.log(error);
 
     return(
       <div className='form-group'>
@@ -34,6 +36,7 @@ class SelectField extends React.Component {
         </select>
 
         {this.props.hint && <span className='help-block'>{this.props.hint}</span>}
+        {touched && error && <span className='text-danger'>{error}</span>}
       </div>
     )
   }
