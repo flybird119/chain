@@ -33,9 +33,7 @@ class SelectField extends React.Component {
             </option>)}
         </select>
 
-        {this.props.hint && <span className='help-block'>
-          <ReactMarkdown source={this.props.hint} />
-        </span>}
+        {this.props.hint && <span className='help-block'>{this.props.hint}</span>}
       </div>
     )
   }

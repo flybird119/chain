@@ -9,15 +9,11 @@ import styles from './AccessControlList.scss'
 
 class AccessControlList extends React.Component {
   render() {
-    const tableListProps = {
-      titles: ['ID', 'Policy']
-    }
-
-    const tokenList = <TableList {...tableListProps}>
+    const tokenList = <TableList titles={['ID', 'Policy']}>
       {this.props.tokens.map(item => <AccessGrantListItem key={item.id} item={item} />)}
     </TableList>
 
-    const certList = <TableList {...tableListProps}>
+    const certList = <TableList titles={['Certificate', 'Policy']}>
       {this.props.certs.map(item => <AccessGrantListItem key={item.id} item={item} />)}
     </TableList>
 
@@ -62,8 +58,8 @@ const mapStateToProps = (state, ownProps) => {
   const certificatesSelected = ownProps.location.query.type != 'token'
 
   return {
-    tokens: items.filter(item => item.type == 'access_token'),
-    certs: items.filter(item => item.type == 'x509'),
+    tokens: items.filter(item => item.guard_type == 'access_token'),
+    certs: items.filter(item => item.guard_type == 'x509'),
     tokensSelected,
     certificatesSelected,
     tokensButtonStyle: tokensSelected && styles.active,

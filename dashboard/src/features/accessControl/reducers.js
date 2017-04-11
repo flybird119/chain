@@ -3,9 +3,11 @@ import { reducers } from 'features/shared'
 
 const type = 'accessControl'
 
+const idFunc = (item) => JSON.stringify(item.guard_data)
+
 export default combineReducers({
-  items: reducers.itemsReducer(type),
-  queries: reducers.queriesReducer(type),
+  items: reducers.itemsReducer(type, idFunc),
+  queries: reducers.queriesReducer(type, idFunc),
 })
 
 // items

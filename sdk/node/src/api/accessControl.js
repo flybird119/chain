@@ -16,7 +16,7 @@ const accessControl = (/* client */) => ({
       items: [
         {
           guard_data: {
-            id: 'alicetoken'
+            id: 'alicetoken',
           },
           guard_type: 'access_token',
           policy: 'client-readwrite',
@@ -26,7 +26,7 @@ const accessControl = (/* client */) => ({
             subject: {
               cn: 'bob',
               ou: 'engineering',
-            }
+            },
           },
           guard_type: 'x509',
           policy: 'network',
