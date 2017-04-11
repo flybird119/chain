@@ -31,6 +31,10 @@ class Form extends React.Component {
       submitting
     } = this.props
 
+    const tagsString = Object.keys(this.props.item.tags).length === 0 ? '{\n\t\n}' : JSON.stringify(this.props.item.tags, null, 1)
+    const tagLines = tagsString.split(/\r\n|\r|\n/).length
+    const JsonFieldHeight = tagLines < 20 ? `${tagLines * 17}px` : '340px'
+
     return(
       <FormContainer
         error={error}
@@ -39,7 +43,7 @@ class Form extends React.Component {
         submitting={submitting} >
 
         <FormSection title='Asset Tags'>
-          <JsonField fieldProps={tags} />
+          <JsonField height={JsonFieldHeight} fieldProps={tags} />
         </FormSection>
       </FormContainer>
     )
