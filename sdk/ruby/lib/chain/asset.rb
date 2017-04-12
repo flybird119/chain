@@ -70,14 +70,6 @@ module Chain
         client.conn.batch_request('create-asset', opts) { |item| Asset.new(item) }
       end
 
-      def update_tags(opts)
-        client.conn.singleton_batch_request('update-asset-tags', [opts]) { |item| item }
-      end
-
-      def update_tags_batch(opts)
-        client.conn.batch_request('update-asset-tags', opts) { |item| item }
-      end
-
       # @param [Hash] opts Filtering information
       # @option opts [String] filter Filter string, see {https://chain.com/docs/core/build-applications/queries}.
       # @option opts [Array<String|Integer>] filter_params Parameter values for filter string (if needed).
