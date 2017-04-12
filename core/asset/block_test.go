@@ -2,6 +2,7 @@ package asset
 
 import (
 	"context"
+	"encoding/json"
 	"testing"
 
 	"chain/core/query"
@@ -24,6 +25,10 @@ type fakeSaver func(context.Context, *query.AnnotatedAsset, string) error
 
 func (f fakeSaver) SaveAnnotatedAsset(ctx context.Context, aa *query.AnnotatedAsset, sortID string) error {
 	return f(ctx, aa, sortID)
+}
+
+func (f fakeSaver) UpdateAnnotatedAssetTags(ctx context.Context, id bc.AssetID, tags json.RawMessage) error {
+	panic("not implemented")
 }
 
 func TestIndexNonLocalAssets(t *testing.T) {
