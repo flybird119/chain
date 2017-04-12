@@ -5,6 +5,11 @@ import { reduxForm } from 'redux-form'
 import { actions } from 'features/accessControl'
 
 class NewCertificate extends React.Component {
+  constructor(props) {
+    super(props)
+    this.props.fields.guard_data.subject.addField({key: '', value: ''})
+  }
+
   render() {
     const {
       fields: { guard_data, policy },
@@ -16,12 +21,22 @@ class NewCertificate extends React.Component {
     return(
       <FormContainer
         error={error}
-        label='New access token'
+        label='Add certificate grant'
         onSubmit={handleSubmit(this.props.submitForm)}
         submitting={submitting} >
 
-        <FormSection title='Token information'>
-          <TextField title='Token Name' fieldProps={guard_data.id} autoFocus={true} />
+        <FormSection title='Certificate subject'>
+          {guard_data.subject.map((line) =>
+            <div>
+              <TextField title='Field Name' fieldProps={line.key} autoFocus={true} />
+              <TextField title='Field Value' fieldProps={line.value} />
+            </div>
+          )}
+          <button onClick={(e) => {e.preventDefault(); guard_data.subject.addField()}}>
+            Add Field
+          </button>
+        </FormSection>
+        <FormSection title='Policy'>
           <SelectField options={policyOptions}
             title='Policy'
             hint='Available policies are:
@@ -39,7 +54,8 @@ class NewCertificate extends React.Component {
 
 const fields = [
   'guard_type',
-  'guard_data.id',
+  'guard_data.subject[].key',
+  'guard_data.subject[].value',
   'policy',
 ]
 
@@ -48,9 +64,6 @@ const validate = values => {
 
   if (!values.policy) {
     errors.policy = 'Policy is required'
-  }
-  if (!values.guard_data.id) {
-    errors.guard_data = {id: 'Token name is required'}
   }
 
   return errors
