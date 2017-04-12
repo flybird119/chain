@@ -25,20 +25,30 @@ const PinName = "asset"
 // SaveAnnotatedAsset can be a no-op.
 type Saver interface {
 	SaveAnnotatedAsset(context.Context, *query.AnnotatedAsset, string) error
+	UpdateAnnotatedAssetTags(context.Context, string, json.RawMessage) error
+}
+
+func formatTagsForAnnotation(tags map[string]interface{}) (json.RawMessage, error) {
+	jsonTags := json.RawMessage(`{}`)
+	if tags != nil {
+		b, err := json.Marshal(tags)
+		if err != nil {
+			return json.RawMessage{}, err
+		}
+		jsonTags = b
+	}
+	return jsonTags, nil
 }
 
 func Annotated(a *Asset) (*query.AnnotatedAsset, error) {
-	jsonTags := json.RawMessage(`{}`)
 	jsonDefinition := json.RawMessage(`{}`)
 	if len(a.RawDefinition()) > 0 {
 		jsonDefinition = json.RawMessage(a.RawDefinition())
 	}
-	if a.Tags != nil {
-		b, err := json.Marshal(a.Tags)
-		if err != nil {
-			return nil, err
-		}
-		jsonTags = b
+
+	jsonTags, err := formatTagsForAnnotation(a.Tags)
+	if err != nil {
+		return nil, errors.Wrap(err, "format tags for annotation")
 	}
 
 	aa := &query.AnnotatedAsset{

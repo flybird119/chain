@@ -29,6 +29,12 @@ func (ind *Indexer) SaveAnnotatedAsset(ctx context.Context, asset *AnnotatedAsse
 	return errors.Wrap(err, "saving annotated asset")
 }
 
+func (ind *Indexer) UpdateAnnotatedAssetTags(ctx context.Context, id string, tags json.RawMessage) error {
+	const q = "UPDATE annotated_assets SET tags = $1::jsonb WHERE id = $2"
+	_, err := ind.db.Exec(ctx, q, string(tags), id)
+	return errors.Wrap(err, "update query")
+}
+
 // Assets queries the blockchain for annotated assets matching the query.
 func (ind *Indexer) Assets(ctx context.Context, filt string, vals []interface{}, after string, limit int) ([]*AnnotatedAsset, string, error) {
 	p, err := filter.Parse(filt, assetsTable, vals)
