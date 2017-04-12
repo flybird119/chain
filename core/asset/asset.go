@@ -154,8 +154,8 @@ func (reg *Registry) Define(ctx context.Context, xpubs []chainkd.XPub, quorum in
 	return asset, nil
 }
 
-// UpdateTags modifies the tags of the specified asset. The account may be
-// identified either by ID or Alias, but not both.
+// UpdateTags modifies the tags of the specified asset. The asset may be
+// identified either by id or alias, but not both.
 func (reg *Registry) UpdateTags(ctx context.Context, id, alias *string, tags map[string]interface{}) error {
 	if (id == nil) == (alias == nil) {
 		return errors.Wrap(ErrBadIdentifier)
