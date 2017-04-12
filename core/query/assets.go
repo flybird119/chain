@@ -9,6 +9,7 @@ import (
 
 	"chain/core/query/filter"
 	"chain/errors"
+	"chain/protocol/bc"
 )
 
 // SaveAnnotatedAsset saves an annotated asset to the query indexes.
@@ -29,7 +30,7 @@ func (ind *Indexer) SaveAnnotatedAsset(ctx context.Context, asset *AnnotatedAsse
 	return errors.Wrap(err, "saving annotated asset")
 }
 
-func (ind *Indexer) UpdateAnnotatedAssetTags(ctx context.Context, id string, tags json.RawMessage) error {
+func (ind *Indexer) UpdateAnnotatedAssetTags(ctx context.Context, id bc.AssetID, tags json.RawMessage) error {
 	const q = "UPDATE annotated_assets SET tags = $1::jsonb WHERE id = $2"
 	_, err := ind.db.Exec(ctx, q, string(tags), id)
 	return errors.Wrap(err, "update query")

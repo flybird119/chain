@@ -15,7 +15,7 @@ import (
 	"chain/testutil"
 )
 
-func TestUpdateTags(t *testing.T) {
+func TestUpdateAccountTags(t *testing.T) {
 	_, db := pgtest.NewDB(t, pgtest.SchemaPath)
 	ctx := context.Background()
 	c := prottest.NewChain(t)

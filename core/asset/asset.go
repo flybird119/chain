@@ -186,7 +186,7 @@ func (reg *Registry) UpdateTags(ctx context.Context, id, alias *string, tags map
 	}
 
 	return errors.Wrap(
-		reg.indexer.UpdateAnnotatedAssetTags(ctx, aid.String(), jsonTags),
+		reg.indexer.UpdateAnnotatedAssetTags(ctx, aid, jsonTags),
 		"update asset index",
 	)
 }
